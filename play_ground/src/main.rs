@@ -1,6 +1,7 @@
 /* Rust-Study-Notes */
 
 use clap::Parser;
+mod infrastructure;
 
 #[derive(Parser, Debug)]
 #[command(name= "Rust-Study-Notes")]
@@ -8,18 +9,34 @@ use clap::Parser;
 #[command(version= "0.0.0")]
 #[command(about= "An application to test what I've learned in Rust", long_about= None)]
 struct Args {
-    /// Name of the person to greet
-    #[arg(short, long)]
-    name: String,
-    /// Number of times to greet
-    #[arg(short, long, default_value_t = 1)]
-    count: u8,
+    /// Task
+    #[arg(short, long, value_enum, default_value="all")]
+    task: Tasks,
 }
 
 fn main() {
     let args = Args::parse();
-
-    for _ in 0..args.count {
-        println!("Hello {}!", args.name)
+    match args.task {
+        Tasks::All => {
+            infrastructure::questions::run()
+        },
+        Tasks::Task0 => {
+            infrastructure::questions::task_number_0::run();
+        },
+        Tasks::Task1 => {
+            // 
+        },
+        Tasks::Task2 => {
+            // 
+        },
     }
+}
+
+#[derive(clap::ValueEnum, Debug, Clone, Default)]
+enum Tasks {
+    #[default]
+    All,
+    Task0,
+    Task1,
+    Task2
 }
